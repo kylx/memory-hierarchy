@@ -18,6 +18,8 @@
 </head>
 
 <body>
+
+    <h1>Fish is Love</h1>
     <script type="text/javascript">
 
         function getRandomInt(min, max) {
@@ -26,8 +28,8 @@
             return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
         }
 
-        
-        
+
+
 
         // var Memory = function (tileSize, numTilesX, numTilesY) {
         //     this.numTiles = new PIXI.Point(numTilesX, numTilesY);
@@ -82,7 +84,38 @@
         app.stage.addChild(physMem.container);
 
 
-        
+        const cpuSize = 200;
+        const cpuPadding = 10;
+        const cpuRadius = 20;
+        const innerCpuSize = cpuSize - 2 * cpuPadding;
+
+        let gg = new PIXI.Graphics();
+        gg.beginFill(0x34495e);
+        gg.drawRoundedRect(0, 0, cpuSize, cpuSize, cpuRadius * 0.5);
+        gg.endFill();
+        gg.beginFill(0x2ecc71);
+        gg.drawRoundedRect(cpuPadding, cpuPadding, innerCpuSize, innerCpuSize, cpuRadius);
+        gg.endFill();
+        let tt = app.renderer.generateTexture(gg);
+        let ss = new PIXI.Sprite(tt);
+        ss.x = 300;
+        ss.y = 400;
+        app.stage.addChild(ss);
+
+
+        // const loader = new PIXI.loaders.Loader();
+        // loader.add('font', 'fonts/KGNeatlyPrintedSpaced.ttf');
+
+        // loader.load((loader, resources) => {
+        //     PointsTopText = new Text(
+        //         "P1: " + PointsTop,
+        //         { fontFamily: 'font', fontSize: 32, fill: 'white' }
+        //     );
+        //     app.stage.addChild(PointsTopText);
+        // });
+
+
+
 
         // var mem = new Memory(12, 20, 10);
         // app.stage.addChild(mem.container);

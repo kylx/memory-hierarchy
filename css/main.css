@@ -1,3 +1,15 @@
+@font-face {
+    font-family: 'kg';
+    src: url('../fonts/KGNeatlyPrintedSpaced.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+  body {
+    font-family: 'kg', 'Times New Roman';
+  }
+
 
 .box {
     position: relative;
