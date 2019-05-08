@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+
+    <link rel="stylesheet" href="css/main.css">
+
+    <script src="js/anime.min.js"></script>
+    <script src="js/memory.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.7.1/pixi.min.js"></script>
+
+
+</head>
+
+<body>
+    <script type="text/javascript">
+
+        function getRandomInt(min, max) {
+            min = Math.ceil(min);
+            max = Math.floor(max);
+            return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
+        }
+
+        
+        
+
+        // var Memory = function (tileSize, numTilesX, numTilesY) {
+        //     this.numTiles = new PIXI.Point(numTilesX, numTilesY);
+        //     this.totalSize = new PIXI.Point(numTilesX * tileSize, numTilesY * tileSize);
+        //     this.tileSize = tileSize;
+
+        //     let graphics = new PIXI.Graphics();
+        //     graphics.beginFill(0xDE3249);
+        //     graphics.drawRect(1, 1, this.tileSize - 2, this.tileSize - 2);
+        //     graphics.endFill();
+        //     this.texture = app.renderer.generateTexture(graphics);
+
+        //     this.container = new PIXI.Container();
+        //     for (let x = 0; x < this.numTiles.x; ++x)
+        //         for (let y = 0; y < this.numTiles.y; ++y) {
+        //             let sprite = new PIXI.Sprite(this.texture);
+        //             sprite.position.x = this.tileSize * x;
+        //             sprite.position.y = this.tileSize * y;
+        //             this.container.addChild(sprite);
+        //         }
+
+
+        //     this.getTileCenter = function (x, y) {
+        //         return new PIXI.Point(
+        //             this.container.position.x + x * this.tileSize, 
+        //             this.container.position.y + y * this.tileSize
+        //         );
+        //     }
+        // }
+
+
+        // let type = "WebGL"
+        // if (!PIXI.utils.isWebGLSupported()) {
+        //     type = "canvas"
+        // }
+
+        // PIXI.utils.sayHello(type)
+
+        //Create a Pixi Application
+        let app = new PIXI.Application({ width: 256, height: 256 });
+        app.renderer.view.style.position = "absolute";
+        app.renderer.view.style.display = "block";
+        app.renderer.autoResize = true;
+        app.renderer.resize(window.innerWidth, window.innerHeight);
+
+        //Add the canvas that Pixi automatically created for you to the HTML document
+        document.body.appendChild(app.view);
+
+        var settings = new Settings(4);
+        var physMem = new PhysicalMemory(settings, 20);
+        physMem.initializeGraphics(app, 64, 5);
+        app.stage.addChild(physMem.container);
+
+
+        
+
+        // var mem = new Memory(12, 20, 10);
+        // app.stage.addChild(mem.container);
+
+        // let ticksPerUpdate = 6;
+        // let currentTicks = 0;
+
+        // app.ticker.add(delta => {
+        //     currentTicks++;
+        //     if (currentTicks >= ticksPerUpdate){
+        //         currentTicks = 0;
+        //         update(delta);
+        //     }
+        // });
+        // let lines = new PIXI.Graphics();
+        // app.stage.addChild(lines);
+        // function update(delta){
+        //     // console.log(app.ticker.FPS);
+        //     // console.timeEnd('update');
+        //     // console.time('update');
+        //     let mouse = app.renderer.plugins.interaction.mouse.global;
+        //     // mem.container.x++;
+        //     // console.log('asdasd');
+        //     lines.clear();
+        //     lines.beginFill(0xffffff, 1);
+        //     lines.lineStyle(1, 0xffffff, 1, 0.5, true);
+        //     for (let i = 0; i < 1; i++){
+        //         let x = getRandomInt(0, mem.numTiles.x);
+        //         let y = getRandomInt(0, mem.numTiles.y);
+        //         let p = mem.getTileCenter(x, y);
+        //         // console.log(x, y);
+        //         // lines.moveTo(mouse.x, mouse.y).lineTo(p.x, p.y);
+        //         lines.drawRect(p.x, p.y, 10, 10);
+        //     }
+        //     lines.endFill();
+        // }
+    </script>
+    <style>
+        * {
+            padding: 0;
+            margin: 0
+        }
+    </style>
+</body>
+
+</html>
