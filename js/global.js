@@ -14,6 +14,8 @@ app.stage.on("mousedown", ()=>{
 app.stage.on("mouseup", ()=>{
     mousedown = false;
 });
+app.stage.interactive = true;
+app.stage.hitArea = new PIXI.Rectangle(0,0,window.innerWidth, window.innerHeight);
 
 function createTextureBit(settings) {
     let graphics = new PIXI.Graphics();
@@ -24,3 +26,7 @@ function createTextureBit(settings) {
 }
 var TEXTURE_BIT = createTextureBit(SETTINGS_DEFAULT);
 console.log("global");
+
+
+var accessPattern = [];
+
