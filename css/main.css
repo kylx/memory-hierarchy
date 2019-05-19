@@ -6,8 +6,15 @@
 }
 
 
-  body {
+  .abs {
     font-family: 'kg', 'Times New Roman';
+    position:absolute;
+    color: white;
+  }
+
+
+  #cpu {
+      width: 200px;
   }
 
 
