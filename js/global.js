@@ -1,13 +1,16 @@
-
+let my_view = document.getElementById('my_canvas');
 var app = new PIXI.Application({ 
     // view: document.getElementById('app'), 
     // resizeTo: document.getElementById('app'), 
     antialias: true, 
-    forceFXAA: true });
-app.renderer.view.style.position = "absolute";
-app.renderer.view.style.display = "block";
-app.renderer.autoDensity = true;
-app.renderer.resize(window.innerWidth, window.innerHeight*0.8);
+    forceFXAA: true,
+    height: 480,
+    // view: my_view 
+});
+// app.renderer.view.style.position = "absolute";
+// app.renderer.view.style.display = "block";
+// app.renderer.autoDensity = true;
+// app.renderer.backgroundColor = 0xffffff;
 
 var mouse = app.renderer.plugins.interaction.mouse;
 

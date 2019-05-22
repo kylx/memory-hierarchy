@@ -41,11 +41,10 @@ class GfxBit {
 
         if (!dummy){
             this.sprite.on("mouseout", ()=>{
-                if (!this.chosen){
+                // if (!this.chosen){
                     this.sprite.tint = this.colorDefault;
-                    console.log("OUT!");
-                }
-                else this.sprite.tint = this.colorChosen;
+                // }
+                // else this.sprite.tint = this.colorChosen;
             });
             this.sprite.on("mouseover", ()=>{
                 // console.log("cc: ", this.colorHover);
@@ -54,16 +53,18 @@ class GfxBit {
                 if (!mousedown) return;
                 
                 accessPattern.addBit(this.bit);
+                apap();
                 // let sp = new Bit(accessPattern.length * SETTINGS_DEFAULT.bitSize, 0, bit.id, SETTINGS_DEFAULT);
                 // accessPattern.addBit(this.sprite);
                 // accessPattern = accessPattern.filter(onlyUnique);
-                this.chosen = true;
+                // this.chosen = true;
             });
         
             this.sprite.on("click", ()=>{
                 this.sprite.tint = this.colorChosen;
                 accessPattern.addBit(this.bit);
-                this.chosen = true;
+                apap();
+                // this.chosen = true;
                 
             });
         }
@@ -83,7 +84,7 @@ class GfxBit {
 }
 
 class GfxBlock{
-    constructor(block, dummy=false){
+    constructor(block, num, dummy=false, dummy2=false){
         let settings = SETTINGS_DEFAULT;
         let bitSize = settings.bitSize;
         let bitPadding = settings.bitPadding;
@@ -113,6 +114,20 @@ class GfxBlock{
         this.sprite = new PIXI.Sprite(TEXTURE_BLOCK);
         this.sprite.tint = this.colorDefault;
         let pp = this.padding;
+        
+        if (true || !dummy2){
+            
+            this.txt = new PIXI.Text(num, {
+                fontFamily: 'Consolas',
+                fontSize: 20,
+                fill: 0xffffff,
+                align: 'center',
+            });
+            this.txt.x = -16;
+            this.txt.y = 15;
+            this.txt.anchor.set(0.5);
+            this.sprite.addChild(this.txt);
+        }
 
         this.block.bits.forEach((bit, index)=>{
             let fx = new GfxBit(bit, dummy);
@@ -133,7 +148,7 @@ class GfxBlock{
 }
 
 class GfxSet{
-    constructor(set){
+    constructor(set, num){
         let settings = SETTINGS_DEFAULT;
         let bitSize = settings.bitSize;
         let bitPadding = settings.bitPadding;
@@ -147,6 +162,16 @@ class GfxSet{
 
         );
         this.sprite = new PIXI.Container();
+
+        this.txt = new PIXI.Text('set ' + num, {
+            fontFamily: 'Consolas',
+            fontSize: 20,
+            fill: 0xffffff,
+            align: 'center',
+        });
+        this.txt.y = -24;
+        // this.txt.anchor.set(0.5);
+        this.sprite.addChild(this.txt);
     }
     setX(index){
         this.sp.x = this.padding + index * (this.size + this.padding);
@@ -179,6 +204,9 @@ class GfxMemory {
         this.memory = memory;
         let settings = SETTINGS_DEFAULT;
         this.sprite = new PIXI.Sprite();
+
+
+
         // cont.x = x;
         // cont.y = y;
 
@@ -200,12 +228,13 @@ class GfxMemory {
             for (let y = 0; y < this.numY; ++y) {
                 let id = y * this.numX + x;
                 let block = new CBlock(id);
-                let fx = new GfxBlock(block);
-                console.log(block);
-                console.log(fx);
-                console.log(this.sprite);
+                let fx = new GfxBlock(block, id, false, true);
+                // console.log(block);
+                // console.log(fx);
+                // console.log(this.sprite);
                 fx.setX(x);
                 fx.setY(y);
+                fx.sprite.x += x * 40;
                 this.sprite.addChild(fx.sprite);
 
                 // console.log([
@@ -215,6 +244,34 @@ class GfxMemory {
                 // ]);
             }
         }
+    }
+}
+
+class GfxAccessPattern {
+    constructor(accessPattern){
+        this.sprite = new PIXI.Container();
+        
+        let bs = SETTINGS_DEFAULT.bitSize;
+        let bp = SETTINGS_DEFAULT.bitPadding;
+        accessPattern.bits.forEach((bit, index)=>{
+            let bb = new GfxBit(bit);
+            bb.setX(index - accessPattern.counter + 1);
+            this.sprite.addChild(bb.sprite);
+        });
+
+        if (accessPattern.bits.length != 0){
+            this.txt = new PIXI.Text('V', {
+                fontFamily: 'Consolas',
+                fontSize: 20,
+                fill: 0xffffff,
+                align: 'center',
+            });
+            this.txt.x = -5;
+            this.txt.y = -30;
+            // this.txt.anchor.set(0.5);
+            this.sprite.addChild(this.txt);
+        }
+        
     }
 }
 

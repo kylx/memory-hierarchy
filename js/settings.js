@@ -1,14 +1,14 @@
 
 const SETTINGS_DEFAULT = {
     blocksPerRow: 4,
-    rows: 3,
+    rows: 4,
 
     bitsPerBlock: 5,
 
-    numSetBlocks: 4,
-    numCacheSets: 2,
+    numSetBlocks: 2,
+    numCacheSets: 3,
 
-    cachePadding: 5,
+    cachePadding: 0,
 
 
     bitSize: 24,
