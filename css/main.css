@@ -5,36 +5,22 @@
     font-style: normal;
 }
 
+#app {
+    width: 900px;
+    height: 640px;
+}
 
-  .abs {
-    font-family: 'kg', 'Times New Roman';
-    position:absolute;
-    color: white;
-  }
-
-
-  #cpu {
-      width: 200px;
-  }
-
-
-.box {
+#next {
+    /* position: absolute;
+    translate: 100px; */
+}
+* {
+    margin: 0;
+    padding: 0;
+}
+.container {
     position: relative;
-    width: 100px;
-    height: 100px;
-    margin: 4px;
-    display: inline-block;
+    top: 80vh;
 }
 
-.red {
-    background-color: red;
-}
-.blue {
-    background-color: blue;
-}
-.green {
-    background-color: green;
-}
-.yellow {
-    background-color: yellow;
-}
+

@@ -10,77 +10,243 @@
 
     <link rel="stylesheet" href="css/main.css">
 
-    
+
     <script src="assets/text.js"></script>
     <script src="js/anime.min.js"></script>
+    <script src="js/pixi.min.js"></script>
+    <script src="js/tinycolor.js"></script>
+    <script src="js/vue.js"></script>
+    <!-- <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"><script src="js/bootstrap.bundle.min.js"></script> -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <!-- <script src="js/bootstrap.bundle.min.js"></script> -->
+
+    <script src="js/settings.js"></script>
+    <script src="js/global.js"></script>
+    <script src="js/memory.js"></script>
+    <script src="js/graphics.js"></script>
 
 
 </head>
 
 <body>
-    <script src="js/pixi.min.js"></script>
-    <script src="js/tinycolor.js"></script>
-    <script src="js/settings.js"></script>
-    <script src="js/global.js"></script>
-    <script src="js/memory.js"></script>
-    
-    <script type="text/javascript">
+    <div class="container">
+        <span>
 
-        function getRandomInt(min, max) {
-            min = Math.ceil(min);
-            max = Math.floor(max);
-            return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
-        }
+            <script type="text/javascript">
 
-        var ggg = this;
-        var ggg = false;
+                function getRandomInt(min, max) {
+                    min = Math.ceil(min);
+                    max = Math.floor(max);
+                    return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
+                }
 
-        //Add the canvas that Pixi automatically created for you to the HTML document
-        document.body.appendChild(app.view);
+                var ggg = this;
+                var ggg = false;
 
-        app.stage.addChild(new Memory(100, 100, SETTINGS_DEFAULT));
-        let gfx = new PIXI.Graphics();
-        app.stage.addChild(gfx);
+                //Add the canvas that Pixi automatically created for you to the HTML document
+                document.body.appendChild(app.view);
 
-        
-        app.ticker.add((delta)=>{
-            gfx.clear();
-            if (accessPattern.length){
-                gfx.lineStyle(1, 0x00ff00);
-                accessPattern.forEach((bit, index)=>{
-                    if (index == 0){
-                        gfx.moveTo(bit.getGlobalPosition().x, bit.getGlobalPosition().y);
-                        return;
-                    }
-                    let r = bit.id / accessPattern.length;
-                    let tc = tinycolor.fromRatio({ h: 0, s: 0, l: r });
-                    gfx.lineStyle(5*index/accessPattern.length, 0, 0.8);
-                    let pos = bit.getGlobalPosition();
-                    gfx.lineTo(pos.x, pos.y);
+                // app.stage.addChild(new CMemory(20, 20, SETTINGS_DEFAULT));
+                let gfx = new PIXI.Graphics();
+                app.stage.addChild(gfx);
+
+                let ll = new PIXI.Container();
+                ll.x = 20;
+                ll.y = 150;
+                app.stage.addChild(ll);
+
+                // var accessPattern = new AccessPattern();
+
+                var memory = new CMemory();
+                var memoryGfx = new GfxMemory(memory);
+                app.stage.addChild(memoryGfx.sprite);
+                let cc = new CCache();
+                let ccGfx = new GfxCache(cc);
+                var accessPattern = new AccessPattern();
+                // let cs = new CSet();
+                cc.loadBlock(0);
+                cc.loadBlock(3);
+                cc.loadBlock(4);
+                // let set = new GfxSet(cs);
+
+                cc.sets.forEach((set, index) => {
+                    let setGfx = new GfxSet(set);
+                    set.blocks.forEach((block, index) => {
+                        let bb = new GfxBlock(block, true);
+                        // bb.setY(index);
+                        bb.setY(index);
+                        setGfx.sprite.addChild(bb.sprite);
+                    });
+                    setGfx.sprite.x = index * 150;
+                    ccGfx.sprite.addChild(setGfx.sprite);
                 });
-                if (mousedown) gfx.lineTo(mouse.global.x, mouse.global.y);
-                gfx.endFill();
+
+
+
+                ccGfx.sprite.x = 200;
+                ccGfx.sprite.y = 300;
+                app.stage.addChild(ccGfx.sprite);
+
+                // accessPattern.x = 50;
+                // accessPattern.y = 400;
+                // app.stage.addChild(accessPattern);
+                // var set = new Set(3);
+                // set.x = 300;
+                // set.y = 300;
+                // // set.setBlock(6);
+                // // set.setBlock(11);
+                // // set.setBlock(16);
+                // // set.setBlock(21);
+                // app.stage.addChild(set);
+
+                // var circ = new PIXI.Graphics();
+                // circ.beginFill(0x000000);
+                // circ.drawCircle
+
+                // app.ticker.add((delta) => {
+                //     ll.removeChildren();
+                //     gfx.clear();
+                //     if (accessPattern.lines.length) {
+                //         gfx.lineStyle(1, 0x00ff00);
+                //         accessPattern.lines.forEach((pos, index) => {
+
+
+                //             if (index == 0) {
+                //                 gfx.moveTo(pos.x, pos.y);
+                //                 return;
+                //             }
+                //             let r = accessPattern.bits[index].id / accessPattern.lines.length;
+                //             let tc = tinycolor.fromRatio({ h: 0, s: 0, l: r });
+                //             gfx.lineStyle(5 * index / accessPattern.bits.length, 0xffffff, 0.8);
+
+                //             gfx.lineTo(pos.x, pos.y);
+                //         });
+                //         if (mousedown) gfx.lineTo(mouse.global.x, mouse.global.y);
+                //         // console.log("asdasdasdawsarars");
+                //         if (accessPattern.i != -1){
+                //             let bit = accessPattern.bits[accessPattern.i];
+                //             let pos = bit.getGlobalPosition();
+                //             gfx.lineStyle(1, 0x00ff00);
+                //             gfx.moveTo(pos.x, pos.y);
+                //             gfx.lineTo(mouse.global.x, mouse.global.y);
+                //         }
+
+                //         gfx.endFill();
+                //     }
+
+                // });
+
+                function step() {
+                    // let id = c
+                    // console.log("setp");
+                    // accessPattern.moveRight();
+                    // let id = accessPattern.getCurrentBitId();
+                    // if (set.contains(id)) {
+                    //     console.log("hit: ", id);
+                    // }
+                    // else {
+                    //     console.log("Miss! ", id);
+                    //     set.setBlock(Math.floor(id / 4));
+                    // }
+                    // console.log("acces: ", accessPattern[accessIndex].id);
+                }
+            </script>
+        </span>
+        <span>
+
+        </span>
+    </div>
+
+
+    <div id="app" class="container">
+        <div class="card">
+            <div class="card-body">
+                <div class="card-text">
+                    Next Bit: {{message}} {{ bit }}
+                </div>
+
+                <button class="btn btn-primary" id="next" @click="nextBit">Next</button>
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+        var state = 'next';
+        var app = new Vue({
+            el: '#app',
+            data: {
+                message: 'Hello Vue!',
+                bit: -1,
+            },
+            methods: {
+                // a computed getter
+                nextBit: function () {
+                    this.bit = accessPattern.getCurrent();
+                    
+                    console.log("asdasd", this.bit);
+                    accessPattern.gotoNext();
+
+                    // if (state == 'next') {
+                    //     accessPattern.moveRight();
+                    //     console.log('moving to next!');
+                    //     this.bit = accessPattern.getCurrentBitId();
+
+                    //     if (this.bit != -1)
+                    //         state = 'check';
+                    // }
+                    // else if (state == 'check') {
+                    //     let exists = set.contains(this.bit);
+                    //     console.log('does cache have ', this.bit, '? ', exists);
+                    //     // let id = accessPattern.getCurrentBitId();
+                    //     if (exists) {
+                    //         state = 'hit';
+                    //     }
+                    //     else {
+                    //         state = 'miss'
+                    //     }
+                    // }
+                    // else if (state == 'miss') {
+                    //     let blockId = Math.floor(this.bit / SETTINGS_DEFAULT.bitsPerBlock);
+                    //     let setId = blockId % set.numBlocks;
+                    //     let bits = [];
+                    //     for (let i = 0; i < SETTINGS_DEFAULT.bitsPerBlock; i++)
+                    //         bits.push(i + blockId * SETTINGS_DEFAULT.bitsPerBlock);
+                    //     console.log('copying block ', blockId, ' into set ', setId, ': ', bits);
+                    //     set.setBlock(blockId);
+                    //     state = 'hit';
+                    // }
+                    // else if (state == 'hit') {
+                    //     console.log('do stuff with data')
+                    //     state = 'next';
+                    //     // let blockId = Math.floor(this.bit / SETTINGS_DEFAULT.bitsPerBlock);
+                    //     // set.setBlock(blockId);
+                    // }
+
+
+                    // if (id == -1) return;
+                    // if (set.contains(id)) {
+                    //     console.log("hit: ", id);
+                    // }
+                    // else {
+                    //     console.log("Miss! ", id);
+                    //     set.setBlock(Math.floor(id / SETTINGS_DEFAULT.bitsPerBlock));
+                    // }
+
+                }
             }
-            
         });
-        // let xx = 0;
-        // app.ticker.add((delta)=>{
-        //     if (xx++ > 60){
-        //         xx = 0;
-        //         accessPattern.forEach((bit)=>{
-        //             console.log(bit.getGlobalPosition().x, bit.getGlobalPosition().y);
-        //         });
-        //     }
-            
-        //     // console.log(app.renderer.plugins.interaction.mouse.global);
-        // });
+
+        console.log(app.message);
     </script>
-    <style>
-        * {
-            padding: 0;
-            margin: 0
-        }
-    </style>
+
+
+
+
+
+
+
 </body>
 
 </html>
