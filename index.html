@@ -9,16 +9,10 @@
 
 
     <link rel="stylesheet" href="css/main.css">
-
-
-    <script src="assets/text.js"></script>
-    <!-- <script src="js/anime.min.js"></script> -->
     <script src="js/pixi.min.js"></script>
     <script src="js/tinycolor.js"></script>
     <script src="js/vue.min.js"></script>
-    <!-- <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"><script src="js/bootstrap.bundle.min.js"></script> -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
-    <!-- <script src="js/bootstrap.bundle.min.js"></script> -->
 
     <script src="js/settings.js"></script>
     <script src="js/global.js"></script>
@@ -95,17 +89,9 @@
             return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
         }
 
-        var ggg = this;
-        var ggg = false;
-
-        //Add the canvas that Pixi automatically created for you to the HTML document
-        // var el = document.createElement('div');
-        // el.className = 'container';
-        // el.appendChild(app.view);
         document.getElementById('stage').insertBefore(app.view, 
-            document.getElementById('bef'));
+        document.getElementById('bef'));
 
-        // app.stage.addChild(new CMemory(20, 20, SETTINGS_DEFAULT));
         let gfx = new PIXI.Graphics();
         app.stage.addChild(gfx);
 
@@ -145,75 +131,6 @@
         var ap = new GfxAccessPattern(accessPattern);
         stage.addChild(ap.sprite);
 
-        // var ap = new GfxAccessPattern(accessPattern);
-        // app.stage.addChild(ap.sprite);
-
-        // accessPattern.x = 50;
-        // accessPattern.y = 400;
-        // app.stage.addChild(accessPattern);
-        // var set = new Set(3);
-        // set.x = 300;
-        // set.y = 300;
-        // // set.setBlock(6);
-        // // set.setBlock(11);
-        // // set.setBlock(16);
-        // // set.setBlock(21);
-        // app.stage.addChild(set);
-
-        // var circ = new PIXI.Graphics();
-        // circ.beginFill(0x000000);
-        // circ.drawCircle
-
-        // app.ticker.add((delta) => {
-        //     ll.removeChildren();
-        //     gfx.clear();
-        //     if (accessPattern.lines.length) {
-        //         gfx.lineStyle(1, 0x00ff00);
-        //         accessPattern.lines.forEach((pos, index) => {
-
-
-        //             if (index == 0) {
-        //                 gfx.moveTo(pos.x, pos.y);
-        //                 return;
-        //             }
-        //             let r = accessPattern.bits[index].id / accessPattern.lines.length;
-        //             let tc = tinycolor.fromRatio({ h: 0, s: 0, l: r });
-        //             gfx.lineStyle(5 * index / accessPattern.bits.length, 0xffffff, 0.8);
-
-        //             gfx.lineTo(pos.x, pos.y);
-        //         });
-        //         if (mousedown) gfx.lineTo(mouse.global.x, mouse.global.y);
-        //         // console.log("asdasdasdawsarars");
-        //         if (accessPattern.i != -1){
-        //             let bit = accessPattern.bits[accessPattern.i];
-        //             let pos = bit.getGlobalPosition();
-        //             gfx.lineStyle(1, 0x00ff00);
-        //             gfx.moveTo(pos.x, pos.y);
-        //             gfx.lineTo(mouse.global.x, mouse.global.y);
-        //         }
-
-        //         gfx.endFill();
-        //     }
-
-        // });
-
-        function step() {
-            // let id = c
-            // console.log("setp");
-            // accessPattern.moveRight();
-            // let id = accessPattern.getCurrentBitId();
-            // if (set.contains(id)) {
-            //     console.log("hit: ", id);
-            // }
-            // else {
-            //     console.log("Miss! ", id);
-            //     set.setBlock(Math.floor(id / 4));
-            // }
-            // console.log("acces: ", accessPattern[accessIndex].id);
-        }
-    </script>
-
-    <script>
         var state = 'next';
         var app = new Vue({
             el: '#app',
@@ -274,58 +191,9 @@
                     apap();
 
 
-
-                    // if (state == 'next') {
-                    //     accessPattern.moveRight();
-                    //     console.log('moving to next!');
-                    //     this.bit = accessPattern.getCurrentBitId();
-
-                    //     if (this.bit != -1)
-                    //         state = 'check';
-                    // }
-                    // else if (state == 'check') {
-                    //     let exists = set.contains(this.bit);
-                    //     console.log('does cache have ', this.bit, '? ', exists);
-                    //     // let id = accessPattern.getCurrentBitId();
-                    //     if (exists) {
-                    //         state = 'hit';
-                    //     }
-                    //     else {
-                    //         state = 'miss'
-                    //     }
-                    // }
-                    // else if (state == 'miss') {
-                    //     let blockId = Math.floor(this.bit / SETTINGS_DEFAULT.bitsPerBlock);
-                    //     let setId = blockId % set.numBlocks;
-                    //     let bits = [];
-                    //     for (let i = 0; i < SETTINGS_DEFAULT.bitsPerBlock; i++)
-                    //         bits.push(i + blockId * SETTINGS_DEFAULT.bitsPerBlock);
-                    //     console.log('copying block ', blockId, ' into set ', setId, ': ', bits);
-                    //     set.setBlock(blockId);
-                    //     state = 'hit';
-                    // }
-                    // else if (state == 'hit') {
-                    //     console.log('do stuff with data')
-                    //     state = 'next';
-                    //     // let blockId = Math.floor(this.bit / SETTINGS_DEFAULT.bitsPerBlock);
-                    //     // set.setBlock(blockId);
-                    // }
-
-
-                    // if (id == -1) return;
-                    // if (set.contains(id)) {
-                    //     console.log("hit: ", id);
-                    // }
-                    // else {
-                    //     console.log("Miss! ", id);
-                    //     set.setBlock(Math.floor(id / SETTINGS_DEFAULT.bitsPerBlock));
-                    // }
-
                 }
             }
         });
-
-        console.log(app.message);
     </script>
 
 
