@@ -14,6 +14,8 @@
     <script src="js/vue.min.js"></script>
     <link href="css/bootstrap.min.css" rel="stylesheet">
 
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
     <script src="js/settings.js"></script>
     <script src="js/global.js"></script>
     <script src="js/memory.js"></script>
@@ -28,41 +30,130 @@
             <div class="col-sm">
                 <div class="card">
                     <div id="stage" class="card-body">
-                            <div id="bef" class="card-text">
-                                    <h1>Instructions</h1>
-                                    Create an access pattern by clicking the memory cells. Then click the <b>next</b> button to simulate memory access.
+                        <button id="bef" type="button" class="btn btn-primary btn-info" data-toggle="modal"
+                            data-target="#exampleModal">
+                            More Information
+                        </button>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+                            aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">More Information</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+
+                                        <h3>Instructions</h3>
+                                        <div>
+                                            Click or drag-click on the memory cells to create an <strong>access
+                                                pattern</strong>.
+                                            Click the <strong>next</strong> button to simulate memory access.
+                                        </div>
+                                        <h3 style="margin-top:20px;">Simulation Settings</h3>
+                                        <table class="table table-bordered" style="margin-top:10px;">
+
+                                            <tbody>
+                                                <tr>
+                                                    <td class="align-middle"># of sets in cache</td>
+                                                    <td class="align-middle">3</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="align-middle"># of blocks per set</td>
+                                                    <td class="align-middle">2</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="align-middle"># of bits per block</td>
+                                                    <td class="align-middle">5</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="align-middle">physical memory size</td>
+                                                    <td class="align-middle">80 bits</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="align-middle">block replacement policy</td>
+                                                    <td class="align-middle">least recently used</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-dismiss="modal">Close</button>
+                                    </div>
                                 </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
             <div id="app" class="col-sm">
                 <div class="card">
                     <div class="card-body">
-                        
+
                         <button class="btn btn-primary" id="next" @click="nextBit">Next</button>
-                        
+
                         <div class="card-text">
-                            Current bit: {{ bit }}
-
+                            <table class="table table-bordered table-sm text-center">
+                                <thead>
+                                    <tr>
+                                        <th colspan="2">
+                                            access pattern stats
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class=" align-middle ">memory accesses</td>
+                                        <td class=" align-middle ">{{ totalBitsAccessed }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class=" align-middle ">misses</td>
+                                        <td class=" align-middle ">{{ misses }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class=" align-middle ">miss rate</td>
+                                        <td class=" align-middle ">{{ missRate | percent }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <table v-if="bit != 'none'" class="table table-bordered table-sm text-center">
+                                <thead>
+                                    <tr>
+                                        <th colspan="2">
+                                            current state
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class=" align-middle">trying to access</th>
+                                        <td class=" align-middle">{{ bit }}</th>
+                                    </tr>
+                                    <tr>
+                                        <td class=" align-middle">belongs to block</th>
+                                        <td class=" align-middle">{{ block }}</th>
+                                    </tr>
+                                    <tr>
+                                        <td class=" align-middle">is in cache?</th>
+                                        <td v-if="hit" class=" align-middle text-success">{{ hit }}</th>
+                                        <td v-else class=" align-middle text-danger">{{ hit }}</th>
+                                    </tr>
+                                    <tr v-if="hit">
+                                        <td class=" align-middle">contained in set</th>
+                                        <td class=" align-middle">{{ set }}</th>
+                                    </tr>
+                                    <tr v-else>
+                                        <td class=" align-middle">loaded into set</th>
+                                        <td class=" align-middle">{{ set }}</th>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
-
-                        <div class="card-text" v-if='bit != "none"'>
-                            <div>
-                                Belongs to block: {{ block }}
-                            </div>
-                            <div v-if="hit" class="text-success">
-                                <b>Cache Hit</b>
-                                <div>Found on set {{set}}</div>
-                            </div>
-                            <div v-else class="text-danger">
-                                <b>Cache Miss</b>
-                                <div>Loaded into set {{set}}</div>
-                                
-                            </div>
-                            
-
-                        </div>
-
                     </div>
 
                 </div>
@@ -89,8 +180,8 @@
             return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
         }
 
-        document.getElementById('stage').insertBefore(app.view, 
-        document.getElementById('bef'));
+        document.getElementById('stage').insertBefore(app.view,
+            document.getElementById('bef'));
 
         let gfx = new PIXI.Graphics();
         app.stage.addChild(gfx);
@@ -140,30 +231,47 @@
                 bit: 'none',
                 block: -1,
                 set: -1,
+                totalBitsAccessed: 0,
+                misses: 0,
+                missRate: 0,
             },
             methods: {
                 // a computed getter
                 nextBit: function () {
+                    oldBit = this.bit;
+                    oldHit = this.hit;
                     this.bit = accessPattern.getCurrent();
                     if (this.bit == -1) {
-                        this.bit = 'none';
+                        this.bit = oldBit;
+                        return;
                     }
 
 
                     this.hit = cc.containsBit(this.bit);
+                    oldBlock = this.block;
                     this.block = Math.floor(this.bit / SETTINGS_DEFAULT.bitsPerBlock);
                     if (isNaN(this.block) || this.block < 0 || this.block > 15) {
-                        this.bit = 'none';
+                        this.bit = oldBit;
+                        this.block = oldBlock;
+                        this.hit = oldHit;
                         return;
                     }
+                    oldSet = this.set;
                     this.set = this.block % SETTINGS_DEFAULT.numCacheSets;
-                    if (this.set < 0 || this.set >= SETTINGS_DEFAULT.numCacheSets){this.bit = 'none';
+                    if (this.set < 0 || this.set >= SETTINGS_DEFAULT.numCacheSets) {
+                        this.bit = oldBit;
+                        this.set = oldSet;
                         return;
 
                     }
-                    
+
                     // console.log("asdasd", this.bit);
                     accessPattern.gotoNext();
+                    if (!this.hit) {
+                        this.misses += 1;
+                    }
+                    this.totalBitsAccessed += 1;
+                    this.missRate = this.misses / this.totalBitsAccessed;
 
 
                     // if (!cc.containsBit(this.bit)){
@@ -191,6 +299,11 @@
                     apap();
 
 
+                }
+            },
+            filters: {
+                percent: function (val) {
+                    return (val * 100).toFixed(2) + '%';
                 }
             }
         });
